@@ -1,6 +1,5 @@
 const net = require("net");
 const axios = require("axios");
-const { send } = require("process");
 
 // === Configuration ===
 const TCP_PORT = 35350;
@@ -16,17 +15,16 @@ const server = net.createServer((socket) => {
     const time = message.includes("time");
 
     if (distance && !time) {
-      await sendHttpPost("http://192.168.1.44:5833/boards/SmallTime/stop");
-      await sendHttpPost("http://192.168.1.44:5833/boards/BigTime/start");
+      await sendHttpPost("http://localhost:5833/boards/SmallTime/stop");
+      await sendHttpPost("http://localhost:5833/boards/BigTime/start");
 
       console.log("bigTime started, smalltime stopped");
     } else if (distance > 3 && distance <= 400 && time) {
-      await sendHttpPost("http://192.168.1.44:5833/boards/BigTime/stop");
+      await sendHttpPost("http://localhost:5833/boards/BigTime/stop");
       console.log("bigTime stopped");
     } else if (!(distance > 3 && distance <= 400) && time) {
-      await sendHttpPost("http://192.168.1.44:5833/boards/BigTime/stop");
-      await sendHttpPost("http://192.168.1.44:5833/boards/SmallTime/start");
-
+      await sendHttpPost("http://localhost:5833/boards/BigTime/stop");
+      await sendHttpPost("http://localhost:5833/boards/SmallTime/start");
       console.log("smallTime started");
     }
   });
